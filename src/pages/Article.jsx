@@ -4,6 +4,11 @@ import {
   TableBody, TextField, Button, Paper, Typography, Alert
 } from "@mui/material";
 
+
+
+import { API_URL } from "../api";
+
+
 function Article() {
   const [articles, setArticles] = useState([]);
   const [qteModifs, setQteModifs] = useState({});

@@ -11,6 +11,11 @@ import {
 } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+
+import { API_URL } from "../api";
+
+
+
 function Login() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +24,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("https://istock-backend-p2uc.onrender.com/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,8 +39,10 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(data));
         navigate("/");
       } else {
-        setMessage(`❌ ${data.message}`);
+        const err = data?.detail || data?.message || "Erreur inconnue";
+        setMessage(`❌ ${err}`);
       }
+
     } catch (error) {
       console.error(error);
       setMessage("Erreur de connexion à l'API.");

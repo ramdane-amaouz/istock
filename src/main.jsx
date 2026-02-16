@@ -21,3 +21,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </BrowserRouter>
 )
 
+import { API_URL } from "./api";

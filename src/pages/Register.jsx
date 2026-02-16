@@ -13,6 +13,10 @@ import {
 } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+
+import { API_URL } from "../api";
+
+
 function Register() {
   const [entrepriseNom, setEntrepriseNom] = useState("");
   const [localisation, setLocalisation] = useState("");
@@ -61,7 +65,7 @@ function Register() {
     }
 
     try {
-      const response = await fetch("https://istock-backend-p2uc.onrender.com/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

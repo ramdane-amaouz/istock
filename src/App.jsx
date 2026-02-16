@@ -14,6 +14,9 @@ import Register from './pages/Register.jsx';    // ← à importer
 import PrivateRoute from './components/PrivateRoute.jsx';
 import AjouterEmploye from './pages/AjouterEmploye.jsx';
 
+import { API_URL } from "./api";
+
+
 
 
 
