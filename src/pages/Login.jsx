@@ -11,41 +11,33 @@ import {
 } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-
-import { API_URL } from "../api";
-
-
+import { supabase } from "../supabaseClient";
 
 function Login() {
-  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");       // on utilise email pour Supabase
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setMessage("");
     try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ login, password }),
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage(`✅ Connexion réussie, rôle : ${data.role}`);
-        localStorage.setItem("user", JSON.stringify(data));
-        navigate("/");
-      } else {
-        const err = data?.detail || data?.message || "Erreur inconnue";
-        setMessage(`❌ ${err}`);
+      if (error) {
+        setMessage(`❌ ${error.message}`);
+        return;
       }
 
-    } catch (error) {
-      console.error(error);
-      setMessage("Erreur de connexion à l'API.");
+      // Ici: session OK. AuthProvider va appeler /me automatiquement.
+      setMessage("✅ Connexion réussie");
+      navigate("/");
+    } catch (e) {
+      console.error(e);
+      setMessage("❌ Erreur lors de la connexion.");
     }
   };
 
@@ -58,10 +50,10 @@ function Login() {
 
         <Box noValidate>
           <TextField
-            label="Login"
+            label="Email"
             fullWidth
-            value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             sx={{ marginBottom: 2 }}
           />
@@ -95,9 +87,7 @@ function Login() {
 
           <Typography sx={{ marginTop: 2 }} align="center">
             Pas encore de compte ?{" "}
-            <Link to="/register">
-              Créer un compte
-            </Link>
+            <Link to="/register">Créer un compte</Link>
           </Typography>
         </Box>
       </Paper>

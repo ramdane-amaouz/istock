@@ -11,12 +11,17 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import { API_URL } from "../api";
+
+
+
 function AjouterArticle() {
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
   const [prix, setPrix] = useState("");
   const [qte, setQte] = useState("");
   const [message, setMessage] = useState("");
+  const [categorie,setCategorie] = useState("");
 
   const navigate = useNavigate();
 
@@ -34,7 +39,7 @@ function AjouterArticle() {
     const employerId = user.employer_id;
 
     try {
-      const response = await fetch("https://istock-backend-p2uc.onrender.com/add-product", {
+      const response = await fetch(`${API_URL}/add-product`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +50,8 @@ function AjouterArticle() {
           prix: parseFloat(prix),
           qte: parseInt(qte, 10),
           entreprise_id: entrepriseId,
-          employer_id: employerId
+          employer_id: employerId,
+          categorie
         }),
       });
 
@@ -57,8 +63,9 @@ function AjouterArticle() {
         setDescription("");
         setPrix("");
         setQte("");
+        setCategorie("");
       } else {
-        setMessage(`❌ ${data.message}`);
+        setMessage(`❌ ${data.detail ?? data.message ?? "Erreur"}`);
       }
     } catch (error) {
       console.error(error);
@@ -93,6 +100,18 @@ function AjouterArticle() {
                 required
               />
             </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                label="Catégorie"
+                fullWidth
+                value={categorie}
+                onChange={(e) => setCategorie(e.target.value)}
+                required
+              />
+            </Grid>
+            
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Prix unitaire (€)"

@@ -1,20 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import { useAuth } from "../auth/AuthContext.jsx";
 
 function Menu() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     navigate("/login");
   };
 
   return (
     <nav>
-<span>
-  {user ? `👋 Bonjour ${user?.prenom || user?.login || ""}` : ""}
-</span>
+      <span>
+        {user ? `👋 Bonjour ${user?.login || ""}` : ""}
+      </span>
 
       <button><Link className="home" to="/">Home</Link></button>
       <button><Link className="article" to="/article">Article</Link></button>

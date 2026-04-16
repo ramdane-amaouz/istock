@@ -10,6 +10,9 @@ import {
   Alert
 } from "@mui/material";
 
+import { API_URL } from "../api";
+
+
 function AjouterEmploye() {
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
@@ -37,7 +40,7 @@ function AjouterEmploye() {
     const entrepriseId = user.entreprise_id;
 
     try {
-      const response = await fetch("https://istock-backend-p2uc.onrender.com/add-employee", {
+      const response = await fetch(`${API_URL}/add-employee`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -8,13 +8,16 @@ import {
   CardContent
 } from "@mui/material";
 
+import { API_URL } from "../api";
+
+
 function Home() {
   const [stats, setStats] = useState({ nb_produits: 0, nb_employes: 0 });
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchStats = async () => {
-      const response = await fetch(`https://istock-backend-p2uc.onrender.com/stats?entreprise_id=${user.entreprise_id}`);
+      const response = await fetch(`${API_URL}/stats?entreprise_id=${user.entreprise_id}`);
       const data = await response.json();
       setStats(data);
     };
